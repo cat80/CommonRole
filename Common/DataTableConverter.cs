@@ -1,7 +1,7 @@
 ﻿#region 文件描述
 
 // 描述：DataTable Json序列化器
-// 作者：苏志平
+// 作者：cat80
 // 时间：2012-06-13 11:40
 
 #endregion
