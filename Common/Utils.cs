@@ -38,14 +38,7 @@ namespace Common
             {
                 get { return 601; }
             }
-            public string ProductName
-            {
-                get { return "微云端"; }
-            }
-            public string LegalCopyright
-            {
-                get { return "2014 微时代科技"; }
-            }
+          
         }
 
         public const string ASSEMBLY_VERSION = "3.6.601";

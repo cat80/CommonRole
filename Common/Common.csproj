@@ -85,21 +85,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvancedTemplate.cs" />
     <Compile Include="Arithmetic.cs" />
     <Compile Include="CacheHelper.cs" />
     <Compile Include="Config\ConfigBase.cs" />
     <Compile Include="Config\IConfig.cs" />
     <Compile Include="Config\IConfigEntity.cs" />
-    <Compile Include="Config\LeAccountConfig.cs" />
-    <Compile Include="Config\LeAccountEntity.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Enum\AgentMarke.cs" />
     <Compile Include="Enum\Activity.cs" />
     <Compile Include="HttpClientUtils.cs" />
     <Compile Include="ImageCut.cs" />
-    <Compile Include="Config\SiteConfig.cs" />
-    <Compile Include="Config\SmsConfig.cs" />
     <Compile Include="CoordinateRange.cs" />
     <Compile Include="DataRowConverter.cs" />
     <Compile Include="DataTableConverter.cs" />
@@ -110,10 +105,7 @@
     <Compile Include="Encrypt.cs" />
     <Compile Include="EntityHelper.cs" />
     <Compile Include="Enum\PageCommandType.cs" />
-    <Compile Include="FetionMessage.cs" />
     <Compile Include="FileDirecotryHelper.cs" />
-    <Compile Include="FootBollClass.cs" />
-    <Compile Include="FormAjaxDetails.cs" />
     <Compile Include="HttpClient.cs">
       <SubType>Component</SubType>
     </Compile>
