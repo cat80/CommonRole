@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "提示信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .foot
+    {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+</style>
+<div id="wp" class="wp">
+    <div id="ct" class="wp cl w" style="min-height: 60px;">
+        <div class="nfl" style="height:240px;;margin-top: 140px;">
+            <div class="f_c altw">
+                <div id="messagetext" class="alert_info">
+                    <p>
+                        @Html.Raw(ViewBag.Message)<script type="text/javascript" reload="1">                                                      @*setTimeout("window.location.href ='@Html.Raw(ViewBag.URL)';", @ViewBag.Time);*@</script></p>
+                    <p class="alert_btnleft">
+                        <a href="@Html.Raw(ViewBag.URL)">如果您的浏览器没有自动跳转，请点击此链接</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

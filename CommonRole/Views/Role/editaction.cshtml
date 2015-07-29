@@ -1,0 +1,107 @@
+﻿@using MP.Role.Entity;
+@model Role_action
+@{
+    ViewBag.Title = "编辑功能信息";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+} 
+<script type="text/javascript">
+    jQuery(function ($) {
+        @{if (Model != null)
+          {
+            @:$("#IsShowInMenu option[value=@Model.IsShowInMenu]").attr("selected","selected");
+            @:$("#Status option[value=@Model.Status]").attr("selected","selected");
+          }
+        }
+        
+    });
+
+
+   
+</script> 
+<div class="cLineB">
+    <h4>
+        编辑管理员信息</h4>
+</div>
+<form method="post" action="/role/saveaction" enctype="multipart/form-data">
+@Html.HiddenFor(item => item.ActionID)
+<div class="msgWrap">
+    <table class="userinfoArea" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    <span class="red">*</span>控制器名：
+                </th>
+                <td>
+                    @Html.TextBoxFor(item => item.ControllerName, new { @class = "px", size = 25, validate = "{required:true,maxlength:765}", required = "" })
+                    @*  <input type="text" required="" class="px" name="wxname" value="" tabindex="1" size="25">*@
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>
+                    <span class="red">*</span>ActionName：
+                </th>
+                <td>
+                    @Html.TextBoxFor(item => item.ActionName, new { @class = "px", size = 25, required = "" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    所属菜单：
+                </th>
+                <td>
+                    @Html.DropDownListFor(item => item.ResourceID, ViewBag.ResourceList as SelectList, "  ", null)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    显示名称:
+                </th>
+                <td>
+                    @Html.TextBoxFor(item => item.DisplayName, new { @class = "px", size = 25, required = "" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    排序:
+                </th>
+                <td>
+                    @Html.TextBoxFor(item => item.Sort, new { @class = "px", size = 25, required = "" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    状态：
+                </th>
+                <td>
+                    <select id="Status" name="Status">
+                        <option value="1">正常</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    是否显示：
+                </th>
+                <td>
+                    <select id="IsShowInMenu" name="IsShowInMenu">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                </th>
+                <td>
+                    <button type="submit" class="btnGreen" id="saveSetting">
+                        保存</button>
+                    <a href="/role/actions" class="btnGray vm" style="margin-left: 40px;">取消</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</form>

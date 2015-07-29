@@ -1,0 +1,136 @@
+﻿@using MP.Role.Entity;
+@using MP.Role.Businuss;
+@model List<User_info>
+@{
+    ViewBag.Title = "管理员列表";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+    int colSpan = 6;
+
+}
+<script>
+    jQuery(function ($) {
+        var reqStatus = '@(Request["status"])';
+       
+     
+        $("#status option[value=" + reqStatus + "]").attr("selected", "selected");
+    });
+
+
+</script>
+<div class="usercontent">
+    <ul>
+        <li>
+            @Html.Raw(RoleATag.Link("controlpanel", "editadmin", "添加用户", null, new { @class = "btnGreens" }))
+            <br />
+        </li>
+    </ul>
+    <div style="border: none;" class="cLineB">
+        <div class="searchbar right">
+            <form action="/controlpanel/adminlist" method="get">
+                <input type="text" value="@Request["keyword"]" name="keyword" placeholder="输入关键词搜索" class="txt left"
+                       id="kwd">
+                状态：
+                <select name="status" id="status">
+                    <option value="">全部</option>
+                    <option value="1">正常</option>
+                    <option value="0">禁用</option>
+                    <option value="3">已经到期</option>
+                </select>
+                <input type="submit" title="搜索" class="btnGrayS" href="" id="msgSearchBtn" value="搜索">
+            </form>
+        </div>
+        <div class="clr">
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+</div>
+<div class="msgWrap">
+    <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    姓名
+                </th>
+                <th>
+                    登陆名称
+                </th>
+
+                <th>
+                    状态
+                </th>
+
+                <th>
+                    创建时间
+                </th>
+                <th>
+                    到期时间
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="@(colSpan)" style="text-align: center;">
+                            暂无数据
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @item.UserName
+                            </td>
+                            <td>
+                                @item.UserLoginName
+                            </td>
+
+                            <td>
+                                @Html.Raw((item.Status == 1 ? "<font color='green'>正常</font>" : "<font color='red'>禁用</font>"))
+                            </td>
+
+                            <td>
+                                @item.CreateTime.ToString("yyyy-MM-dd")
+
+                            </td>
+                            <td>
+                                @item.ExpireTime.ToString("yyyy-MM-dd")
+
+                            </td>
+                            <td class="norightborder">
+
+                                @Html.Raw(RoleATag.Link("controlpanel", "editadmin", "编辑", new { id = item.UserID }, new { aa = 222 }))
+
+                                @Html.Raw(RoleATag.Link("controlpanel", "deleteadmin", "删除", new { id = item.UserID, e3e = "dfsa^&*()" }, new { onclick = "javascript:return confirm('是否删除管理员，如果账号被删除所有的信息也会删除！');" }))
+
+
+
+
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="cLine">
+    <div class="pageNavigator right">
+        <div class="pages">
+            <div class="pg">
+                @Html.Raw(ViewBag.PagerInfo)
+            </div>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+</div>

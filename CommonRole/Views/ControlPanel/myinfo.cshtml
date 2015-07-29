@@ -1,0 +1,94 @@
+﻿@using MP.Role.Entity;
+@model User_info
+@{
+    ViewBag.Title = "账户信息";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+}
+<style type="text/css">
+    .time {
+        border: 1px solid #AAA;
+        padding: 3px;
+    }
+
+    #tags li {
+        border: 0px solid #DDDDDD;
+    }
+</style>
+<div class="usercontent">
+    <ul id="tags">
+        <li class="selectTag"><a href="javascript:;">基本资料</a> </li>
+
+        <li><a href="@Url.Action("changepassword")">修改密码</a> </li>
+        <div class="clr">
+        </div>
+    </ul>
+    <div class="clr">
+    </div>
+</div>
+<div class="msgWrap">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" class="userinfoArea">
+        <tbody>
+            <tr>
+                <th>
+                    姓名：
+                </th>
+                <td>
+                    @Model.UserName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    登陆账号：
+                </th>
+                <td>
+                    @Model.UserLoginName
+                </td>
+            </tr>
+            
+            <tr>
+                <th>
+                    到期时间 ：
+                </th>
+                <td>
+                    @Model.ExpireTime.ToString("yyyy-MM-dd")
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    所属于地区：
+                </th>
+                <td>
+                    @(Model.Province)&nbsp; @(Model.City)
+                </td>
+            </tr>
+           
+
+            <tr>
+                <th>
+                    手机号码 ：
+                </th>
+                <td>
+                    @Model.MobliePhone
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    邮箱：
+                </th>
+                <td>
+                    @Model.Email
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<style type="text/css">
+    .userinfoArea tbody th {
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .userinfoArea {
+        margin: 0;
+    }
+</style>

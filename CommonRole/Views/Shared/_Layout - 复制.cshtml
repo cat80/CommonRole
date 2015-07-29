@@ -1,0 +1,140 @@
+﻿ 
+@using System.Text;
+@using CommonRole.MVCWebSite;
+@{
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+        @{ string title = ViewBag.Title;
+            if (!string.IsNullOrEmpty(title))
+            {
+                if (title.Length < 6)
+                {
+                    @(title + " - 微云端-微信营销领导品牌 ")
+                }
+                else
+                {
+                    @(title);
+                }
+            }
+        }
+    </title>
+    <meta name="keywords" content="微云端,微信接口开发,微网站建设,微信营销平台开发" />
+    <meta name="description" content="微云端是湖南省微时代科技有限公司旗下针对微信营销的品牌，主要业务包括微信接口开发,企业微网 站建设,微信营销平台开发，更有全国首发的16个行业定制服务！" />
+    <link href="/public/news/css/global.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/public/news/js/jquery-1.7.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/index/css/common.css" />
+    <script src="/static/js/common.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/css/public2.css" />
+ 
+    <script src="@Url.Content("~/js/jquery.cookie.js")" type="text/javascript"></script>
+    @RenderSection("subhead", false)
+</head>
+<body id="nv_member">
+    <div id="append_parent">
+    </div>
+    <div class="widthMAX TopBg">
+        <div class="width1180 Top">
+            <div class="FloatLeft ">
+                <a href="/" title="点击返回首页">
+
+                </a>
+            </div>
+            <div class="FloatRight top-header-highlight">
+                @if (true)
+                {
+
+                    string welcomeText = "您好，欢迎使用后台管理系统！";
+
+
+                    <a href="/controlpanel/store">@string.Format("{0}(UID:{1})", "用户名未写", 122)</a>
+                    @(welcomeText)
+                    <a href="/controlpanel/changepassword">[修改密码]</a> <a href="/account/logout">[退出]</a>
+
+                }
+
+            </div>
+        </div>
+        @RenderBody()
+        <div class="foot" style="bottom: 0; padding: 10px0; width: 100%;">
+            <link rel="stylesheet" type="text/css" href="/index/css/newmenu/footer.css" />
+
+
+            <div class="footerbg2" style="text-align: center; padding: 0px;"><h2>© 版权所有 Luke 2015</h2></div>
+            }
+        </div>
+    </div>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            g1 = $(".pages > ul").find("li").index($(".curs"));
+            $(".pages > ul > li").click(function () {
+                $(".pages > ul > li").removeClass("curs");
+                $(this).addClass("curs");
+                g = $(".pages > ul").find("li").index($(".curs"));
+                $(".screens").animate({ left: (parseInt(-100 * g)) + "%" }, 1000);
+                var t_name = "text" + g;
+                $(".text" + g1).animate({ top: 80, opacity: 'hide' }, 500);
+                $(".text" + g).animate({ top: 30, opacity: 'show' }, 500);
+                $(".tel" + g1).animate({ top: 100, opacity: 'hide' }, 500);
+                $(".tel" + g).animate({ top: 40, opacity: 'show' }, 500);
+                g1 = g;
+            })
+            $(".service_list > div").hover(
+          function () {
+              $(this).children().children(".bottom").animate({ height: '36px' }, 500)
+          }, function () {
+              $(this).children().children(".bottom").animate({ height: '24px' }, 500)
+          })
+        }
+)
+    </script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $(".big_pic").hover(function () {
+                $(this).children(".erwei").animate({ bottom: -60, opacity: 'show' }, 200);
+            }, function () {
+                $(this).children(".erwei").animate({ bottom: -50, opacity: 'hide' }, 200);
+            }
+    );
+            var href = window.location.href.toLowerCase();
+            $(".top_r a").each(function () {
+                var currentUrl = $(this).attr("href").toLowerCase();
+                if (href.indexOf(currentUrl) != -1 && currentUrl != "/") {
+                    //                    alert(currentUrl);
+                    $(".top_r a").removeClass("now");
+                    $(this).addClass("now");
+                    return false;
+                }
+            });
+
+
+            var _windowScrollTop; //滚动条距离顶端距离
+            var _windowWidth; //窗口宽度
+            jQuery(window).scroll(actionEvent).resize(actionEvent);  //监听滚动条事件和窗口缩放事件
+
+            //响应事件
+            function actionEvent() {
+                _windowScrollTop = jQuery(window).scrollTop(); //获取当前滚动条高度
+                _windowWidth = jQuery(window).width(); //获取当前窗口宽度
+                moveQQonline(); //移动面板
+            }
+            //移动面板
+            function moveQQonline() {
+                $("#WOSBtn_wx").stop().animate({
+                    right: 1, top: _windowScrollTop + 300
+                }, "normal");
+            }
+            jQuery(window).scroll();
+        });
+
+
+
+    </script>
+
+    <div id="discuz_tips" style="display: none;">
+    </div>
+</body>
+</html>

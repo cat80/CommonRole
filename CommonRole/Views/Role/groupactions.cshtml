@@ -1,0 +1,287 @@
+﻿@using MP.Role.Entity;
+@model Role_group
+@{
+    ViewBag.Title = "角色权限管理";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+    List<Role_group> groups = ViewBag.AllGroups;
+    List<Role_action> actions = ViewBag.AllActions;
+    List<Role_resource> resources = ViewBag.AllResources;
+    var allParentRes = resources.Where(item => item.ParentID == 0).ToList();
+    int groupid = ViewBag.CurrentGroupID;
+    bool hasModel = Model != null;
+    List<int> groupRes = new List<int>();
+    List<int> groupAct = new List<int>();
+    if (hasModel)
+    {
+        groupRes = Model.Auth_ResourceList;
+        groupAct = Model.Auth_ActionList;
+    }
+}
+<link href="/asset/js/ligerui/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+<link href="/asset/js/ligerui/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    function showAll() {
+        var $ = jQuery;
+        jQuery(".l-accordion-content").fadeIn();
+        var $toggle = $(".l-accordion-header .l-accordion-toggle");
+        $toggle.addClass("l-accordion-toggle-open");
+        $toggle.removeClass("l-accordion-toggle-close");
+    }
+    function hideAll() {
+        var $ = jQuery;
+        jQuery(".l-accordion-content").fadeOut();
+        var $toggle = $(".l-accordion-header .l-accordion-toggle");
+        $toggle.removeClass("l-accordion-toggle-open");
+        $toggle.addClass("l-accordion-toggle-close");
+    }
+    function selectAllPrj() {
+        jQuery("#frmData").find("input[type='checkbox']").attr("checked", true);
+    }
+    function clearAllPrj() {
+        jQuery("#frmData").find("input[type='checkbox']").attr("checked", false);
+    }
+    function changeResourceAction(obj, id) {
+        var $ = jQuery;
+        if ($(obj).attr("checked")) {
+            $("#menulist_" + id).find("input[type='checkbox']").attr("checked", "checked");
+        } else {
+            $("#menulist_" + id).find("input[type='checkbox']").removeAttr("checked");
+        }
+    }
+    jQuery(function ($) {
+        $(".l-accordion-header").click(function () {
+            var $toggle = $(this).find(".l-accordion-toggle");
+            //如果有打开，则关闭
+            if ($toggle.hasClass("l-accordion-toggle-open")) {
+                $toggle.removeClass("l-accordion-toggle-open");
+                $toggle.addClass("l-accordion-toggle-close");
+                $(this).next(".l-accordion-content").fadeOut();
+            } else {
+                $toggle.addClass("l-accordion-toggle-open");
+                $toggle.removeClass("l-accordion-toggle-close");
+                $(this).next(".l-accordion-content").fadeIn();
+            }
+        });
+
+        $(".l-accordion-header input,.l-accordion-header label").click(function (e) {
+            e.stopPropagation(); 
+        });
+        $(".l-layout-left .l-layout-header").click(function () {
+            $(".l-layout-left").hide();
+            var $coll = $(".l-layout-collapse-left");
+            $coll.height($(".l-layout-left").height());
+            $coll.show();
+            $(".l-layout-center").width("976px");
+
+            $(".prj-res-menu").width("776px");
+        });
+
+        $(".l-layout-collapse-left").click(function () {
+            $(this).hide();
+            $(".l-layout-left").show();
+            $(".l-layout-center").width("830px");
+            $(".prj-res-menu").width("630px");
+        });
+
+        $(".span-save-change").click(function () {
+            var data = $("#frmData").serialize();
+            $.post("/role/savegroupactions", data, function (d) {
+                alert(d.msg);
+            }, "json");
+        });
+    });
+</script>
+<style type="text/css">
+    .prj-list-item-over
+    {
+        background-color: #e0ecff;
+    }
+    .prj-res-name
+    {
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: bold;
+        vertical-align: top;
+        width: 150px;
+        margin-right: 10px;
+        float: left;
+    }
+    .prj-list
+    {
+        margin: 10px 0;
+        overflow: hidden;
+    }
+    .prj-list label
+    {
+        cursor: pointer;
+    }
+    .prj-res-menu
+    {
+        float: left;
+        width: 630px;
+    }
+    .prj-res-menu ul
+    {
+        overflow: hidden;
+    }
+    .prj-res-menu li
+    {
+        width: 100px;
+        float: left;
+        margin: 3px 5px 0 0;
+    }
+    .prj-res-menu li:hover, .prj-res-name:hover
+    {
+        background-color: #DCF8A8;
+    }
+    prj-res-menu-over
+    {
+        background-color: #DCF8A8;
+    }
+    .l-panel-btn:hover
+    {
+        background: url("/asset/js/ligerUI/skins/Aqua/images/panel/panel-btn.gif") repeat-x scroll 0 0 #E0EDFF;
+    }
+    .prj-list-item
+    {
+        border-bottom: dashed 1px #ccc;
+        overflow: hidden;
+        padding-bottom: 3px;
+        margin: 0 10px 0 10px;
+    }
+    .l-accordion-panel
+    {
+        border: 0px;
+        border-bottom: 1px solid #D0D0D0;
+    }
+    .l-body:hover
+    {
+        background: none repeat scroll 0 0 #F5F5F5;
+    }
+</style>
+<div id="mainlayout" style="margin-top: -12px; margin-left: -12px;">
+    <div style="width: 170px; position: inherit; overflow: hidden; float: left;" class="l-layout-left">
+        <div class="l-layout-header">
+            <div class="l-layout-header-toggle">
+            </div>
+            <div class="l-layout-header-inner">
+                角色列表</div>
+        </div>
+        <div class="l-layout-content">
+            <div style="height: 450px; overflow-y: auto; width: auto;" class="l-tree">
+                @foreach (var item in groups)
+                {
+                    <li>
+                        <div class="l-body@(item.GroupID == groupid ? " l-selected" : "")">
+                            <div class="l-box l-tree-icon l-tree-icon-leaf ">
+                            </div>
+                            <span><a href="/role/groupactions/@item.GroupID">@item.GroupName</a></span></div>
+                    </li>
+                }
+            </div>
+            <div class="l-tree-loading">
+            </div>
+        </div>
+    </div>
+    <div style="display: none; float: left; position: inherit;" class="l-layout-collapse-left">
+        <div class="l-layout-collapse-left-toggle" style="position: inherit;">
+        </div>
+    </div>
+    <div class="l-layout-center" style="position: inherit; float: right; width: 830px;">
+        <div class="l-layout-header">
+            @(hasModel ? string.Format("{0} >>", Model.GroupName) : string.Empty)
+            权限</div>
+        <div title="" position="center" class="l-layout-content">
+            <form action="/role/savegroupactions" method="post" enctype="multipart/form-data"
+            id="frmData">
+            @Html.HiddenFor(item => item.GroupID)
+            <div id="toolMenu" class="l-toolbar" ligeruiid="toolMenu">
+                <div class="l-toolbar-item l-panel-btn l-toolbar-item-hasicon span-save-change" toolbarid="1">
+                    <span>保存</span><div class="l-panel-btn-l">
+                    </div>
+                    <div class="l-panel-btn-r">
+                    </div>
+                    <img src="/asset/images/silkicons/database_save.png"></div>
+                <div class="l-bar-separator">
+                </div>
+                <div class="l-toolbar-item l-panel-btn l-toolbar-item-hasicon" toolbarid="4" onclick="selectAllPrj()">
+                    <span>全选</span><div class="l-panel-btn-l">
+                    </div>
+                    <div class="l-panel-btn-r">
+                    </div>
+                    <img src="/asset/images/silkicons/arrow_in.png"></div>
+                <div class="l-bar-separator">
+                </div>
+                <div class="l-toolbar-item l-panel-btn l-toolbar-item-hasicon" toolbarid="5" onclick="clearAllPrj()">
+                    <span>全不选</span><div class="l-panel-btn-l">
+                    </div>
+                    <div class="l-panel-btn-r">
+                    </div>
+                    <img src="/asset/images/silkicons/arrow_out.png"></div>
+                <div class="l-bar-separator">
+                </div>
+                <div class="l-toolbar-item l-panel-btn l-toolbar-item-hasicon" toolbarid="6" onclick="showAll()">
+                    <span>展开所有</span><div class="l-panel-btn-l">
+                    </div>
+                    <div class="l-panel-btn-r">
+                    </div>
+                    <img src="/asset/images/silkicons/folder.png"></div>
+                <div class="l-bar-separator">
+                </div>
+                <div class="l-toolbar-item l-panel-btn l-toolbar-item-hasicon" toolbarid="5" onclick="hideAll()">
+                    <span>折叠所有</span><div class="l-panel-btn-l">
+                    </div>
+                    <div class="l-panel-btn-r">
+                    </div>
+                    <img src="/asset/images/silkicons/package.png"></div>
+            </div>
+            <div style="overflow-y: auto;" class="lgAccordion l-accordion-panel">
+                @foreach (var item in allParentRes)
+                {
+                    var subRess = resources.Where(res => res.ParentID == item.ResourceID).ToList();
+
+              
+                    <div class="l-accordion-header">
+                        <div class="l-accordion-toggle l-accordion-toggle-open">
+                        </div>
+                        <div class="l-accordion-header-inner">
+                            <input id="ckResMenu_@(item.ResourceID)" type="checkbox"  name="ckResMenu" @(groupRes.Contains(item.ResourceID) ? " checked='checked' " : "")  value="@item.ResourceID" />
+                            <label for="ckResMenu_@(item.ResourceID)">@item.ResourceName</label>
+                        </div>
+                    </div> 
+                    <div title="" class="lg_arr l-accordion-content">
+                        <div style="overflow-y: auto;" class="lgAccordion l-accordion-panel">
+                            <ul style="padding-left: 15px;" class="prj-list">
+                                @foreach (var sub in subRess)
+                                {
+                                    var subActions = actions.Where(action => action.ResourceID == sub.ResourceID);
+                                    <li class="prj-list-item">
+                                        <div class="prj-res">
+                                            <div class="prj-res-name">
+                                                <input type="checkbox" @(groupRes.Contains(sub.ResourceID) ? " checked='checked' " : "") name="ckResMenu" value="@sub.ResourceID" id="ckResMenu_@(sub.ResourceID)" onchange="changeResourceAction(this,@sub.ResourceID);">
+                                                <label for="ckResMenu_@(sub.ResourceID)">
+                                                    @sub.ResourceName</label>
+                                            </div>
+                                            <div class="prj-res-menu" id="menulist_@(sub.ResourceID)">
+                                                <ul>
+                                                    @foreach (var subact in subActions)
+                                                    {
+                                                        <li>
+                                                            <input  @(groupAct.Contains(subact.ActionID) ? " checked='checked' " : "") type="checkbox" id="ckAction_@(subact.ActionID)" name="ckAction" value="@(subact.ActionID)"><label
+                                                                for="ckAction_@(subact.ActionID)">@subact.DisplayName</label>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

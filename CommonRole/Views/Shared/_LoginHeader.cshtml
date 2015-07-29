@@ -1,0 +1,25 @@
+﻿@using MP.Role.Businuss
+@using MP.Role.Entity
+
+@{
+    Layout = null;
+    User_info user = CurrentUserInfo.CurrentUser;
+}
+<div class="width1180 Top">
+    <div class="FloatLeft ">
+        <a href="/" title="点击返回首页">
+            <img alt="点击返回首页" style="width:108px;height:36px;" src="http://static.wydapp.com/images/logo2.png" />
+        </a>
+    </div>
+
+    @if (user != null)
+    {
+        <div class="FloatRight top-header-highlight">
+            <a href="/controlpanel/index">@(user.UserName)(UID:@(user.UserID))</a>   您好，欢迎使用权限管理！
+            <a href="/controlpanel/changepassword">[修改密码] </a>
+            <a href="/account/logout">[退出] </a>
+        </div>
+    }
+
+
+</div>

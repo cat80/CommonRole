@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link href="/asset/css/loginstyle.css" rel="stylesheet" type="text/css" media="all" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="/asset/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $("#img-valcode").click(function () {
+                $(this).attr("src", "/images/loginbanner.jpg?dt=" + new Date().getTime());
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="login">
+        <h2>通用权限管理系统</h2>
+        <div class="login-top">
+            <h1>用户登陆</h1>
+            <form action="@Url.Action("login")" method="post">
+                <input type="text" name="username" placeholder="请输入用户名">
+                <input type="password" name="password" placeholder="请输入密码" />
+                @*<input class="txt-valcode" type="text" style="width:140px;" placeholder="验证码" />
+                    <img src="/images/loginbanner.jpg" id="img-valcode" class="img-valcode" title="点击刷新验证码" />*@
+
+                <div class="forgot">
+                    @*<a href="#">忘记密码</a>*@
+                    <input type="submit" value="登录">
+                </div>
+                <div class="login-error">
+                    @ViewBag.LoginError
+                </div>
+            </form>
+        </div>
+        <div class="login-bottom">
+            <h3>新用户 &nbsp;<a href="#">注册</a>&nbsp 这里</h3>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>Copyright &copy; 2015 Luke All rights reserved. </a></p>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+﻿@using MP.Role.Entity;
+@model List<Role_action>
+@{
+    ViewBag.Title = "功能管理";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+    bool editmodel = Request["editmodel"] == "1";
+    string editModelUrl = Request.Url.AbsoluteUri;
+    string prev = "&";
+    if (editModelUrl.IndexOf("editmodel=1", StringComparison.InvariantCultureIgnoreCase) == -1)
+    {
+        editModelUrl = editModelUrl.Replace("editmodel=", string.Empty);
+        if (editModelUrl.IndexOf("?") == -1)
+        {
+            prev = "?";
+        }
+        editModelUrl += prev + "editmodel=1";
+    } 
+   
+}
+@section subhead
+{
+    <!--[if gte IE 7]><!-->
+    <link id="artDialog-skin" href="/asset/js/artDialog5.0.4/skins/default.css" rel="stylesheet" />
+    <!--<![endif]-->
+    <!--[if lt IE 7]>
+    <link id="artDialog-skin" href="/asset/js/artDialog5.0.4/skins/default.css" rel="stylesheet" />
+<![endif]-->
+    <script src="/asset/js/artDialog5.0.4/artDialog.min.js" type="text/javascript"></script>
+    <script src="/asset/js/artDialog5.0.4/artDialog.plugins.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        .tr-edit-list .px
+        {
+            width: 110px;
+        }
+        .tr-edit-list select
+        {
+            width: 110px;
+        }
+    </style>
+}
+<div class="usercontent">
+    <ul>
+        <li><a class="btnGreens" href="/role/editaction">添加功能</a>
+            <br />
+        </li>
+    </ul>
+    <div style="border: none;" class="cLineB">
+        <div class="searchbar right">
+            <form action="/role/actions" method="get">
+            <input type="hidden"  name="editmodel" value="@Request["editmodel"]"/>
+            <input type="text" value="@Request["keyword"]" name="keyword" placeholder="输入关键词搜索" class="txt left"
+                id="kwd"/>
+            资源:
+            @{SelectList selectList = new SelectList(ViewBag.ResourceList, "ResourceID", "ResourceName", Request["resid"]);
+            }
+            @Html.DropDownList("resid", selectList, "   ", null)
+            <input type="submit" title="搜索" class="btnGrayS" href="" id="msgSearchBtn" value="搜索">
+            @if (editmodel)
+            {
+                <a class="btnGrayS" href="/role/actions">查看模式</a>
+            }
+            else
+            {
+                <a class="btnGrayS" href="@editModelUrl">编辑模式</a>
+            }
+            </form>
+        </div>
+        <div class="clr">
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+</div>
+<div class="msgWrap">
+    <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    资源名称
+                </th>
+                <th>
+                    控制器名
+                </th>
+                <th>
+                    视图名称
+                </th>
+                <th>
+                    显示名称
+                </th>
+                <th style="width: 70px;">
+                    排序
+                </th>
+                <th style="width: 40px;">
+                    状态
+                </th>
+                <th style="width: 40px;">
+                    显示
+                </th>
+                <th style="width: 120px;">
+                    创建时间
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.Count == 0)
+                {
+                <tr>
+                    <td colspan="9" style="text-align: center;">
+                        暂无数据
+                    </td>
+                </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        if (editmodel)
+                        {
+                <tr class="tr-edit-list" id="tr_data_@(item.ActionID)">
+                    <td>
+                        @{SelectList select = new SelectList(ViewBag.ResourceList, "ResourceID", "ResourceName", item.ResourceID);  
+                        }
+                        @Html.DropDownList("ResourceID", select, null, null)
+                        @Html.Hidden("ActionID", item.ActionID)
+                    </td>
+                    <td>
+                        <input type="text" value="@item.ControllerName"    name="ControllerName"  class="px"/>
+                    </td>
+                    <td>
+                        <input type="text" value="@item.ActionName"    name="ActionName"  class="px"/>
+                    </td>
+                    <td>
+                        <input type="text" value="@item.DisplayName"   name="DisplayName"  class="px"/>
+                    </td>
+                    <td>
+                        <input type="text" value="@item.Sort"    name="Sort"  class="px"/>
+                    </td>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <input type="checkbox" checked="checked" value="1" name="Status" class="checkbox" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" value="1" name="Status" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsShowInMenu == 1)
+                        {
+                            <input type="checkbox" checked="checked" value="1" name="IsShowInMenu" class="checkbox" />
+                        }
+                        else
+                        {
+                            <input type="checkbox" value="1" name="IsShowInMenu" />
+                        }
+                    </td>
+                    <td>
+                        @item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                        <a onclick="javascript:ajaxUpdate(@(item.ActionID))" href="javascript:;;">修改</a>
+                        <a onclick="javascript:return confirm('是否删除该功能！');" href="/role/deleteaction/@item.ActionID">
+                            删除</a>
+                    </td>
+                </tr>
+                        }
+                        else
+                        {
+                            
+                <tr>
+                    <td>
+                        @item.ResourceName
+                    </td>
+                    <td>
+                        @item.ControllerName
+                    </td>
+                    <td>
+                        @item.ActionName
+                    </td>
+                    <td>
+                        @item.DisplayName
+                    </td>
+                    <td>
+                        @item.Sort
+                    </td>
+                    <td>
+                        @Html.Raw(item.Status == 1 ? "<font color='green'>启用</font>" : "<font color='red'>禁用</font>")
+                    </td>
+                    <td>
+                        @Html.Raw(item.IsShowInMenu == 1 ? "<font color='green'>是</font>" : "<font color='red'>否</font>")
+                    </td>
+                    <td>
+                        @item.CreateTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                    <td>
+                        <a   href="/role/editaction/@item.ActionID">编辑</a> <a onclick="javascript:return confirm('是否删除该功能！');" href="/role/deleteaction/@item.ActionID">
+                            删除</a>
+                    </td>
+                </tr>
+                        }
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div class="cLine">
+    <div class="pageNavigator right">
+        <div class="pages">
+            <div class="pg">
+                @Html.Raw(ViewBag.PagerInfo)
+            </div>
+        </div>
+    </div>
+    <div class="clr">
+    </div>
+</div>
+<script type="text/javascript">
+
+
+
+
+    function ajaxUpdate(id) {
+        var $ = jQuery;
+        var $tr = $("#tr_data_" + id);
+        var arr = [];
+        $tr.find("input,select").each(function () {
+            var tagName = $(this)[0].tagName.toLowerCase();
+            if (tagName == "input") {
+                var type = $(this).attr("type");
+                if (type == "text" || type == "hidden") {
+                    arr.push({ name: $(this).attr("name"), value: $(this).val() });
+                } else if (type == "checkbox" || type == "radio") {
+                    if ($(this).attr("checked")) {
+                        arr.push({ name: $(this).attr("name"), value: $(this).val() });
+                    }
+                }
+            } else if (tagName == "select") {
+                arr.push({ name: $(this).attr("name"), value: $(this).find("option:selected").val() });
+            }
+            //arr.push({ name: $(this).attr("name"), value: $(this).val() });
+        });
+
+        // [more code..]
+        $.post("/role/saveaction", arr, function (d) {
+            if (d.indexOf("保存失败") != -1) {
+                alert("保存失败，请刷新再试！");
+            } else {
+                art.dialog({
+                    time: 1400,
+                    content: '更新成功',
+                    title: '提示',
+                    lock: false
+                });
+            }
+        });
+
+    }
+</script>

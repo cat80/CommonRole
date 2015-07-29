@@ -1,0 +1,174 @@
+﻿@using MP.Role.Entity;
+@model List<Role_group>
+@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+ 
+}
+<link href="/asset/css/news-render.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .userinfoArea th
+    {
+        width: 120px;
+    }
+    .chatPanel .media .mediaHead .title
+    {
+        word-break: normal;
+        word-wrap: word-break;
+        overflow: hidden;
+        font-size: 16px;
+        padding: 0;
+        height: auto;
+        margin-bottom: 5px;
+    }
+    .chatPanel .mediaFullText .mediaContent
+    {
+        font-size: 14px;
+    }
+</style>
+<div class="cLine">
+    <h4 style="font-size: 16px;">
+        角色列表 <a href="@Url.Action("groupactions")" class="btnGreens" style="float:right;">角色权限管理</a>
+    </h4>
+</div>
+<div class="msgWrap form">
+    <form enctype="multipart/form-data" id="frmmaindata" action="@Url.Action("savegroups")"
+        method="post">
+    <div class="bdrcontent">
+        <div id="div_ptype">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListProduct">
+                <thead>
+                    <tr>
+                        <th>
+                            角色名
+                        </th>
+                        <th style="width: 80px; text-align: center;">
+                            启用
+                        </th>
+                        <th class="norightborder" style="width: 100px;">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="text" style="width: 220px;" class="px" value="@item.GroupName" name="GroupName[@item.GroupID]"/>
+                            </td>
+                            <td style="text-align: center;">
+                                @if (item.State == 1)
+                                {
+                                    <input type="checkbox" checked="checked" value="1" name="State[@item.GroupID]" class="checkbox"/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"   value="1"  name="State[@item.GroupID]" />
+                                }
+                            </td>
+                            <td class="norightborder">
+                                <a href="/role/groupactions/@item.GroupID">角色权限</a> <a href="javascript:drop_confirm('您确定要删除该角色吗，如果删除角色拥有该角色的用户将失去角色权限?', '/role/deletegroups/@item.GroupID')">
+                                    删除</a>
+                            </td>
+                        </tr>
+                            
+                               
+                    }
+                </tbody>
+                <tbody name="div_add_del" id="div_add_del">
+                    <tr style="display: none;">
+                        <td>
+                            <input type="text" style="width: 220px;" class="px" value="" name="new[GroupName]" />
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" checked="checked" value="1" name="new[State]" class="checkbox" />
+                        </td>
+                        <td class="norightborder">
+                            <a onclick="delrow(this, 'div_add_del');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="norightborder" colspan="7">
+                            <button value="true" class="btnGray vm" onclick="addrow('div_add_del');" id="vtype"
+                                type="button">
+                                <strong>添加</strong></button>&#12288;
+                            <button class="btnGreen vm" value="true" name="batchsubmit" type="submit">
+                                <strong>保存</strong></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="padding-left: 10px" class="footactions">
+        <div class="pages">
+        </div>
+    </div>
+    </form>
+    <script type="text/javascript">
+        function addchild(id) {
+            var $ = jQuery;
+            var $tr = $("#div_add_del tr:first").clone(true);
+            $tr.find("td:first").wrapInner("<div class='board'></div>");
+            $tr.find("input[name='new[ParentID]']").val(id);
+            $tr.addClass("child_" + id);
+            $(this).parent().parent().after($tr.show());
+            //                alert($tr.html());
+            //                alert($("#div_add_del tr:first").html());
+            //                alert($(this).text());
+        }
+        function expendchlid(id) {
+            var $ = jQuery;
+            if ($(this).attr("src") == "/index/ordermenu/images/plus_2.png") {
+                $("tr.child_" + id).show();
+                $(this).attr("src", "/index/ordermenu/images/minus_2.png");
+            } else {
+                $("tr.child_" + id).hide();
+                $(this).attr("src", "/index/ordermenu/images/plus_2.png");
+            }
+        }
+        function openchild(id) {
+            var $ = jQuery;
+            $("tr.child_" + id).show();
+            $(".img_expend_" + id).attr("src", "/index/ordermenu/images/minus_2.png");
+
+        }
+        jQuery(function ($) {
+            $("#frmmaindata").submit(function () {
+                $("input[type='checkbox']").each(function () {
+                    if (!$(this).attr("checked")) {
+                        $(this).val('0');
+                        $(this).attr("checked", true)
+                    }
+                });
+            });
+
+            $("#imgexpend").click(function () {
+                if ($(this).attr("src") == "/index/ordermenu/images/plus_2.png") {
+                    $("tr[class^='child_']").show();
+                    $("img[class^='img_expend_']").attr("src", "/index/ordermenu/images/minus_2.png");
+                    $(this).attr("src", "/index/ordermenu/images/minus_2.png");
+
+                } else {
+                    $("tr[class^='child_']").hide();
+                    $("img[class^='img_expend_']").attr("src", "/index/ordermenu/images/plus_2.png");
+                    $(this).attr("src", "/index/ordermenu/images/plus_2.png");
+                }
+            });
+        });
+        function addrow(tbody) {
+            var $ = jQuery;
+            var $tr = $("#" + tbody + " tr").clone(true);
+            $tr.find("input[name='new[Url]']").hide();
+            $(".ListProduct tbody:first").append($tr.show());
+
+        }
+        function delrow(obj, tbody) {
+            jQuery(obj).parent().parent().remove();
+        } 
+
+    </script>
+</div>

@@ -1,0 +1,140 @@
+﻿.widthMAX
+{
+    width: 100%;
+    min-width: 1180px;
+}
+.TopBg
+{
+    height: 38px;
+    border-bottom: 1px solid #d6d6d6;
+    line-height: 38px;
+    background-color: #323232;
+    color: #dddddd;
+}
+.Top
+{
+    position: relative;
+}
+.top-header-highlight a,.TopBg .FloatLeft a, .TopBg .FloatLeft a:link, .TopBg .FloatLeft a:visited
+{
+    color: #00ccff;
+}
+.TopBg .FloatLeft a:hover
+{
+    text-decoration: underline;
+}
+/*.TopBg .FloatRight { padding-right:130px;}*/
+ .TopBg .FloatRight a, .TopBg .FloatRight a:link, .TopBg .FloatRight a:visited
+{
+    color: #00ccff;
+}
+.TopBg .FloatRight a:hover
+{
+    text-decoration: underline;
+}
+.LangOpt
+{
+    position: absolute;
+    right: 10px;
+    top: 2px;
+}
+
+.Logo
+{
+}
+.Tel
+{
+}
+.TopRight
+{
+    width: 195px;
+    overflow: hidden;
+}
+.TopSearch
+{
+    padding-top: 28px;
+    overflow: hidden;
+}
+.SearchCont
+{
+    float: left;
+    width: 430px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #969696;
+    border-right: none;
+}
+.SearchBtn
+{
+    float: left;
+    width: 26px;
+    height: 26px;
+    background: url(../images/SearchBtn.jpg) no-repeat left top;
+    cursor: pointer;
+    border: none;
+}
+
+.width1180
+{
+    margin: 0 auto;
+    width: 1180px;
+}
+
+.FloatLeft
+{
+    float: left;
+    margin: 0;
+}
+.FloatRight
+{
+    float: right;
+    margin: 0;
+}
+.city-select
+{
+    height: 24px;
+    line-height: 23px;
+    margin-left: 45px;
+    margin-top: 7px;
+    width: 163px;
+    float: left;
+}
+.city-select h2
+{
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    height: 21px;
+    padding-right: 10px;
+}
+.city-select a
+{
+    color: #868686;
+    display: inline-block;
+    float: left;
+    height: 18px;
+    margin-top: 0;
+    padding-right: 12px;
+    position: relative;
+    text-decoration: none;
+}
+.city-select a .tri4
+{
+    border-top: 4px solid #868686;
+    right: 0;
+    top: 11px;
+}
+.tri4
+{
+    border: 4px dashed rgba(0, 0, 0, 0);
+    cursor: pointer;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    position: absolute;
+    width: 0;
+}
+.bian1
+{
+    width: 120px;
+}

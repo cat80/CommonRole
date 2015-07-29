@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/common.js"></script>
+    <link href="css/global.css" rel="stylesheet" />
+    <script src="js/jquery.cityselect.js"></script>
+    <link href="js/artDialogv6/ui-dialog.css" rel="stylesheet" />
+    <script src="js/artDialogv6/dialog-min.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $("#btnLoadDialogFrame").click(function () {
+                var d = dialog({
+                    align: 'right',
+                    height: 25,
+                    quickClose: true,
+                    content: "<a href='http://www.baidu.com' onclick='alert(333);'> sdas</a>"
+                }).show(this);
+            });
+            $("#cityselect").citySelect({
+                required: false
+            });
+
+        });
+    </script>
+</head>
+<body>
+    日历
+    <input type="text" value="2099/10/7 0:00:00" size="25" required="" onclick="showcalendar(event, this,true)" name="ExpireTime" id="ExpireTime" data-val-required="ExpireTime 字段是必需的。" data-val-date="字段 ExpireTime 必须是日期。" data-val="true" class="px">
+    <!--日期选择，必须在把 discuz_tips和append_parent div放到calendar.js和calendar.css前-->
+    <hr />
+    地区选择：
+    <div id="cityselect">
+        <select name="Province" class="prov"></select>
+        <select class="city" name="City">
+            <option>请选择</option>
+        </select>
+    </div>
+    <hr />
+    弹窗：   弹窗：   弹窗：       弹窗：   弹窗：   弹窗：   弹窗：   弹窗：   弹窗：   弹窗：   弹窗：   弹窗：
+    <input type="button" value="加载框架" id="btnLoadDialogFrame" />
+    <div id="discuz_tips" style="display: none;">
+    </div>
+    <div id="append_parent">
+    </div>
+
+    <script src="js/calendar.js"></script>
+    <link href="css/calendar.css" rel="stylesheet" />
+</body>
+</html>

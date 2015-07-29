@@ -1,0 +1,275 @@
+﻿@using MP.Role.Entity;
+@model List<Role_resource>
+@{
+    ViewBag.Title = "资源管理";
+    Layout = "~/Views/Shared/_ControlPanel.cshtml";
+    var cateList = Model;
+    if (cateList == null)
+    {
+        cateList = new List<Role_resource>();
+    }
+    var allparent = cateList.Where(item => item.ParentID == 0);
+}
+<link href="/asset/css/news-render.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .userinfoArea th
+    {
+        width: 120px;
+    }
+    .chatPanel .media .mediaHead .title
+    {
+        word-break: normal;
+        word-wrap: word-break;
+        overflow: hidden;
+        font-size: 16px;
+        padding: 0;
+        height: auto;
+        margin-bottom: 5px;
+    }
+    .chatPanel .mediaFullText .mediaContent
+    {
+        font-size: 14px;
+    }
+</style>
+<div class="cLine">
+    <h4 style="font-size: 16px;">
+        资源管理 <a style="display:none;" href="@Url.Action("industryurlmanager")" class="btnGreens" style="float:right;">
+            资源权限管理</a>
+    </h4>
+</div>
+<div class="msgWrap form">
+    <form enctype="multipart/form-data" id="frmmaindata" action="@Url.Action("saveresource")"
+        method="post">
+    <div class="bdrcontent">
+        <div id="div_ptype">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListProduct">
+                <thead>
+                    <tr>
+                        <th style="width: 300px;">
+                            资源名称
+                        </th>
+                        <th>
+                            资源地址
+                        </th>
+                        <th style="width: 80px;">
+                            排序
+                        </th>
+                        <th style="width: 80px;">
+                            启用
+                        </th>
+                        <th style="width: 80px;">
+                            是否显示
+                        </th>
+                        <th class="norightborder" style="width: 100px;">
+                            操作<img style="width: 16px; height: 16px; margin-left: 5px; cursor: pointer;" id="imgexpend"
+                                src="/asset/images/plus_2.png" title="点击展开所有子栏目" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in allparent)
+                    {
+                        <tr>
+                            <td>
+                                <input type="text" style="width: 220px;" class="px" value="@item.ResourceName" name="ResourceName[@item.ResourceID]"/>
+                                <input type="hidden" name="ParentID[@item.ResourceID]" value="0" /><a
+                                        class="green" onclick="addchild.call(this, @item.ResourceID);openchild.call(this,@item.ResourceID);" href="javascript:void(0)">添加子菜单</a>
+                            </td>
+                            <td>
+                                <input type="hidden"   class="px" value="@item.Url" name="Url[@item.ResourceID]"/>
+                            </td>
+                            <td>
+                                <input type="text" style="width: 40px;" class="px" value="@item.Sort" name="Sort[@item.ResourceID]"/>
+                            </td>
+                            <td style="text-align: center;">
+                                @if (item.State == 1)
+                                {
+                                    <input type="checkbox" checked="checked" value="1" name="State[@item.ResourceID]" class="checkbox"/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"   value="1"  name="State[@item.ResourceID]" />
+                                }
+                            </td>
+                            <td style="text-align: center;">
+                                @if (item.ShowInMenu == 1)
+                                {
+                                    <input type="checkbox" checked="checked" value="1" name="ShowInMenu[@item.ResourceID]" class="checkbox"/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"   value="1"  name="ShowInMenu[@item.ResourceID]" />
+                                }
+                            </td>
+                            <td class="norightborder">
+                                <a href="javascript:drop_confirm('您确定要删除吗?', '/role/deleteresources/@item.ResourceID')">
+                                    删除</a>
+                                <img style="width: 16px; height: 16px; margin-left: 5px; cursor: pointer;" src="/asset/images/plus_2.png"
+                                    onclick="expendchlid.call(this,@item.ResourceID)" title="点击展开子类别" class="img_expend_@(item.ResourceID)" />
+                            </td>
+                        </tr>
+                            
+                                var chlid = cateList.Where(cate => cate.ParentID == item.ResourceID).ToList();
+
+                                foreach (var sub in chlid)
+                                { 
+                        <tr class="child_@(item.ResourceID)" style="display:none;">
+                            <td>
+                                <div class='board'>
+                                    <input type="text" style="width: 220px;" class="px" value="@sub.ResourceName" name="ResourceName[@sub.ResourceID]"/>
+                                    <input type="hidden"  value="@sub.ParentID" name="ParentID[@sub.ResourceID]"/>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text"   class="px" value="@sub.Url" style="width:220px;" name="Url[@sub.ResourceID]"/>
+                            </td>
+                            <td>
+                                <input type="text" style="width: 40px;" class="px" value="@sub.Sort" name="Sort[@sub.ResourceID]"/>
+                            </td>
+                            <td style="text-align: center;">
+                                @if (sub.State == 1)
+                                {
+                                    <input type="checkbox" checked="checked" value="1" name="State[@sub.ResourceID]" class="checkbox"/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"   value="1"  name="State[@sub.ResourceID]" />
+                                }
+                            </td>
+                            <td style="text-align: center;">
+                                @if (sub.ShowInMenu == 1)
+                                {
+                                    <input type="checkbox" checked="checked" value="1" name="ShowInMenu[@sub.ResourceID]" class="checkbox"/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"   value="1"  name="ShowInMenu[@sub.ResourceID]" />
+                                }
+                            </td>
+                            <td class="norightborder">
+                                <a href="javascript:drop_confirm('您确定要删除吗?', '/role/deleteresources/@sub.ResourceID')">
+                                    删除</a>
+                            </td>
+                        </tr>
+                         
+                                }
+                    }
+                </tbody>
+                @{Role_resource res = new Role_resource();}
+                <tbody name="div_add_del" id="div_add_del">
+                    <tr style="display: none;">
+                        <td>
+                            <input type="text" style="width: 220px;" class="px" name="new[ResourceName]" />
+                            <input type="hidden" value="0" name="new[ParentID]">
+                        </td>
+                        <td>
+                            <input type="text" class="px" name="new[Url]" value="" style="width: 220px;" />
+                        </td>
+                        <td>
+                            <input type="text" style="width: 40px;" class="px" value="" name="new[Sort]" />
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="checkbox" name="new[State]" value="1" checked="checked" />
+                        </td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="checkbox" name="new[ShowInMenu]" value="1" checked="checked" />
+                        </td>
+                        <td class="norightborder">
+                            <a onclick="delrow(this, 'div_add_del');" href="javascript:;">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="norightborder" colspan="7">
+                            <button value="true" class="btnGray vm" onclick="addrow('div_add_del');" id="vtype"
+                                type="button">
+                                <strong>添加</strong></button>&#12288;
+                            <button class="btnGreen vm" value="true" name="batchsubmit" type="submit">
+                                <strong>保存</strong></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="padding-left: 10px" class="footactions">
+        <div class="pages">
+        </div>
+    </div>
+    </form>
+    <script type="text/javascript">
+        function addchild(id) {
+            var $ = jQuery;
+            var $tr = $("#div_add_del tr:first").clone(true);
+            $tr.find("td:first").wrapInner("<div class='board'></div>");
+            $tr.find("input[name='new[ParentID]']").val(id);
+            $tr.addClass("child_" + id);
+            $(this).parent().parent().after($tr.show());
+            //                alert($tr.html());
+            //                alert($("#div_add_del tr:first").html());
+            //                alert($(this).text());
+        }
+        function expendchlid(id) {
+            var $ = jQuery;
+            if ($(this).attr("src") == "/asset/images/plus_2.png") {
+                $("tr.child_" + id).show();
+                $(this).attr("src", "/asset/images/minus_2.png");
+            } else {
+                $("tr.child_" + id).hide();
+                $(this).attr("src", "/asset/images/plus_2.png");
+            }
+        }
+        function openchild(id) {
+            var $ = jQuery;
+            $("tr.child_" + id).show();
+            $(".img_expend_" + id).attr("src", "/asset/images/minus_2.png");
+
+        }
+        jQuery(function ($) {
+            $("#frmmaindata").submit(function () {
+                $("input[type='checkbox']").each(function () {
+                    if (!$(this).attr("checked")) {
+                        $(this).val('0');
+                        $(this).attr("checked", true)
+                    }
+                });
+            });
+
+            $("#imgexpend").click(function () {
+                if ($(this).attr("src") == "/asset/images/plus_2.png") {
+                    $("tr[class^='child_']").show();
+                    $("img[class^='img_expend_']").attr("src", "/asset/images/minus_2.png");
+                    $(this).attr("src", "/asset/images/minus_2.png");
+
+                } else {
+                    $("tr[class^='child_']").hide();
+                    $("img[class^='img_expend_']").attr("src", "/asset/images/plus_2.png");
+                    $(this).attr("src", "/asset/images/plus_2.png");
+                }
+            });
+        });
+        function addrow(tbody) {
+            var $ = jQuery;
+            var $tr = $("#" + tbody + " tr").clone(true);
+            $tr.find("input[name='new[Url]']").hide();
+            $(".ListProduct tbody:first").append($tr.show());
+            //            var add = false;
+            //            var newnode;
+            //            if ($(tbody).rows.length == 1 && $(tbody).rows[0].style.display == 'none') {
+            //                $(tbody).rows[0].style.display = '';
+            //                newnode = $(tbody).rows[0];
+            //            } else {
+            //                newnode = $(tbody).rows[0].cloneNode(true);
+            //                add = true;
+            //            }
+            //            if (add) {
+            //                $(tbody).appendChild(newnode);
+            //            }
+        }
+        function delrow(obj, tbody) {
+            jQuery(obj).parent().parent().remove();
+        } 
+
+    </script>
+</div>
