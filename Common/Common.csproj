@@ -90,6 +90,8 @@
     <Compile Include="Config\ConfigBase.cs" />
     <Compile Include="Config\IConfig.cs" />
     <Compile Include="Config\IConfigEntity.cs" />
+    <Compile Include="Config\SiteConfig.cs" />
+    <Compile Include="Config\SmsConfig.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Enum\AgentMarke.cs" />
     <Compile Include="Enum\Activity.cs" />
@@ -101,7 +103,6 @@
     <Compile Include="DataTypeHelper.cs" />
     <Compile Include="Definitions\RenderMessagePager.cs" />
     <Compile Include="DTLRequest.cs" />
-    <Compile Include="DxtonMessage.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="EntityHelper.cs" />
     <Compile Include="Enum\PageCommandType.cs" />

@@ -1739,23 +1739,7 @@ namespace Common
             return string.Format("{0}.{1}.{2}", AssemblyFileVersion.FileMajorPart, AssemblyFileVersion.FileMinorPart, AssemblyFileVersion.FileBuildPart);
         }
 
-        /// <summary>
-        /// 获得Assembly产品名称
-        /// </summary>
-        /// <returns></returns>
-        public static string GetAssemblyProductName()
-        {
-            return AssemblyFileVersion.ProductName;
-        }
-
-        /// <summary>
-        /// 获得Assembly产品版权
-        /// </summary>
-        /// <returns></returns>
-        public static string GetAssemblyCopyright()
-        {
-            return AssemblyFileVersion.LegalCopyright;
-        }
+ 
         /// <summary>
         /// 创建目录
         /// </summary>
